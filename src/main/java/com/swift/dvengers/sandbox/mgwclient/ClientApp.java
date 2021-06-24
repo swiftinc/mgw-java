@@ -30,7 +30,7 @@ public class ClientApp {
 		});
 
 		/* Setting up the trust store to connect to microgateway. */
-		System.setProperty("javax.net.ssl.trustStore", "config\\mgw.jks");
+		System.setProperty("javax.net.ssl.trustStore", "config\\demo.jks");
 		System.setProperty("javax.net.ssl.trustStorePassword", "Abcd1234");
 
 		client = builder.build();
