@@ -12,10 +12,12 @@ Sample java client application using [SWIFT Microgateway](https://developer.swif
 * maven 3.5.* and above
 
 ### Install & Run packages
+
+Modify ClientApp.java to match with MGW configuration (like Application Name)
 ```
 mvn clean package assembly:single
 
-java -jar target\mgwclient-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+java -jar target\mgwclient-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ## Authors
