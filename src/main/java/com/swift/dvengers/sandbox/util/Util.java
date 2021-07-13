@@ -12,8 +12,14 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.HashUtil;
 import org.jose4j.lang.JoseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.swift.dvengers.sandbox.mgwclient.ClientApp;
 
 public class Util {
+	private final static Logger LOG = LoggerFactory.getLogger(Util.class);
+	
 	public static String sign(String jwsPayloadStr, String sharedKey) throws JoseException {
 		JsonWebSignature jws = new JsonWebSignature();
 		jws.setPayload(jwsPayloadStr);
@@ -61,9 +67,9 @@ public class Util {
 			JwtClaims jwtClaims = JwtClaims.parse(jws.getUnverifiedPayload());
 			if ((jwtClaims.getClaimValue("digest") != null)
 					&& !jwtClaims.getClaimValue("digest").equals(calculateDigestValue(responseBody))) {
-				System.out.println("Response payload digest is valid\n");
+				LOG.info("Response payload digest is valid\n\n");
 			} else {
-				System.out.println("Response payload digest is invalid\n");
+				LOG.info("Response payload digest is invalid\n\n");
 				return false;
 			}
 

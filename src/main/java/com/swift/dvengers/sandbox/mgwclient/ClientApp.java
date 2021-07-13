@@ -2,6 +2,9 @@ package com.swift.dvengers.sandbox.mgwclient;
 
 import javax.net.ssl.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.swift.dvengers.sandbox.util.Util;
 
 import okhttp3.Call;
@@ -13,8 +16,9 @@ public class ClientApp {
 
 	private OkHttpClient client = null;
 	private String busAppName = "BO2";
-	private String profileId = "trackerProfile";
+	private String profileId = "trackerProfileChannel";
 	private String sharedKey = "Abcd1234Abcd1234Abcd1234Abcd1234";
+	private final static Logger LOG = LoggerFactory.getLogger(ClientApp.class);
 
 	public ClientApp() {
 		OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -39,6 +43,7 @@ public class ClientApp {
 	public static void main(String[] args) {
 		ClientApp app = new ClientApp();
 
+		LOG.info("Starting the Client Application..\n");
 		/* Run swift-apitracker/v4/payments/changed/transactions. */
 		app.runPaymentsChangedTransactions();
 	}
@@ -65,9 +70,10 @@ public class ClientApp {
 			String url = "https://localhost:9003/swift/mgw/swift-apitracker/v4/payments/changed/transactions";
 			String jwsSign = null;
 
-			String payload = Util.buildPayload(getBusAppName(), getProfileId(), url, null);
+			String payload = Util.buildPayload(getBusAppName(), getProfileId(), url, null);			
 			/* Sign the request. */
 			jwsSign = Util.sign(payload, getSharedKey());
+			LOG.info("Request JWS Signature : " + jwsSign + "\n");
 			
 			/* Add authorization header to the request. */
 			Request request = new Request.Builder().url(url).addHeader("Authorization", "Bearer " + jwsSign)
@@ -80,14 +86,14 @@ public class ClientApp {
 			String apiresp = response.body().string();
 			
 			if (Util.verifyResponse(apiresp, jwsToken, getSharedKey())) {
-				System.out.println("Response JWS signature is successfully verified.");
+				LOG.info("Response JWS signature is successfully verified.\n");
 			} else {
-				System.out.println("Failed to verify response JWS signature.");
+				LOG.info("Failed to verify response JWS signature.\n");
 			}
 			/* API response. */
-			System.out.println("\nResponse - " + apiresp);
+			LOG.info("\nResponse : " + apiresp);
 		} catch (Exception ex) {
-			System.out.println("Error in running changed transactions");
+			LOG.error("Error in running changed transactions");
 			ex.printStackTrace();
 		}
 	}	
