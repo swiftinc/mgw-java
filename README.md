@@ -20,10 +20,6 @@ mvn clean package assembly:single
 java -jar target\mgwclient-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-## Authors
-
-vijay.mukundhan@swift.com
-
 ## License
 
 Apache v2.0
